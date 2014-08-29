@@ -39,6 +39,9 @@ one -= 1
 one *= 1
 one /= 1
 
+#conditional assignment ||= assigns a value if the current value is falsey
+one ||= 2
+
 #comparision
 #if, elsif, else, unless, end
 if 1 < 2
@@ -71,6 +74,13 @@ end
 # 	-1 if second item is greater
 one = 2 <=> 1
 
+#tertiary/ternary operator is supported
+one = true ? 1 : nil
+
+#push/concat operator <<
+[1,2,3] << 4 			# => [1,2,3,4]
+"Hello, " << "World" 	# => "Hello, World"
+
 #case when statement
 variable = "something"
 case variable
@@ -80,6 +90,14 @@ when "something else"
 	puts "Different one!"
 else 					#default
 	puts "nope"
+end
+
+#case when and then
+#the above case when statement could be written as
+case variable
+	when "something" then puts "I got one!"
+	when "something else" then puts "Different one!"
+	else puts "nope"
 end
 
 
@@ -99,8 +117,15 @@ no_new_line = gets.chomp
 puts 'puts adds a newline after the line printed'
 print 'print does not'
 
-#concatination is with a plus
+##concatination
+#with a plus
 puts 'hello' + ' ' + 'world'
+#with a "shovel"
+puts 'hello' << ' ' << 'world'
+
+##interpolation
+program = 'something'
+puts "I wrote a program and it said #{program}"
 
 #string methods we went over
 str = 'Hello World'		#use ' when nothing needs to be evaluated (take string literally)
@@ -150,8 +175,13 @@ this_is_true = this_is_an_int.is_a? Integer
 #NOTE there is no boolean class in Ruby, must check
 this_is_true = this_is_false.is_a? FalseClass
 
+#checking if an object will respond to a certain method (has a certain method)
+#respond_to? returns a boolean
+[1,2,3].respond_to?(:push) 	#true
+[1,2,3].respond_to?(:to_sym) #false
+
 ##WRITING YOUR OWN METHODS
-#NOTE if nothing is explicitly returned from a method, the value of the last line will be returned
+#NOTE if nothing is explicitly returned from a method, the value of the last evaluated expression will be returned
 def my_method(_arg)
 	puts _arg
 end
@@ -233,6 +263,9 @@ for num in 1..5
 	print num
 end
 
+#upto and downto on a number (upto and downto are inclusive)
+95.upto(100) do |number| print number, " " end
+100.downto(95) do |number| print number, " " end
 
 =begin
 =
