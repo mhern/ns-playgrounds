@@ -198,6 +198,22 @@ def my_defaulted_method(arg1, arg2=true)
 	puts "a different value was passed for arg2" if arg2 != true
 end
 
+## YIELDING to passed blocks
+def my_yielding_method
+	puts 'currently running method code'
+	yield
+	puts 'back in the method code'
+end
+my_yielding_method { puts 'currently in the block code' }
+
+#passing a param to yield
+def my_param_passing_yielding_method(param)
+	puts 'in the method'
+	yield(param)
+	puts 'in the method again'
+end
+
+my_param_passing_yielding_method('param test') { |p| puts "I was passed this: #{p}" }
 
 =begin
 =
@@ -269,19 +285,32 @@ end
 
 =begin
 =
-= 	BLOCKS
+= 	BLOCKS and PROCS
 =
 =end
 
 #for a code block: { <something here> } is eqivalent to do <something here> end
 # so ({ ~= do) and (} ~= end)
 
-#blocks are like anonymous functions in JS, they just dont have a name
+#passing a block as a parameter
+#to the method "each" without using parentheses
 ['joe', 'jane'].each do |name|
 	puts "#{name[0].upcase}#{name[1..-1].downcase}"
 end
-#NOTE what is actually going on here is we are passing a block as a parameter
-#to the method "each" without using parentheses
+
+#blocks are NOT objects, one of the exceptions in Ruby
+#Procs are a way to save Blocks for reuse
+my_proc = Proc.new do |param|
+	puts param
+end
+["print", "these", "out"].collect!(&my_proc) #syntax to change a proc to a block: &<proc name>
+
+#calling a proc directly: use .call
+my_proc.call("print this out")
+
+#convert symbols (can represent methods) to blocks using &
+["1","2","4"].map(&:to_i) #=> [1,2,4]
+
 
 =begin
 =
@@ -291,6 +320,10 @@ end
 
 #arrays are pretty much like JS arrays as far as I can tell
 my_array = [['ele', 'ment'], ['and', 'another']]
+
+#.collect applys a block to each element in an array
+#NOTE this is the same as .map
+my_array.collect! do |string| puts string end
 
 #hashes are like JS objects somewhat
 #literal notation
@@ -364,3 +397,18 @@ my_hash.delete sym1:
 #I noticed casting being put into place like so
 integer_input = Integer(gets.chomp)
 puts "integer_input: #{integer_input}"
+
+
+=begin
+=
+= 	MODULES
+=
+=end
+
+#to include a module, add to the top of the file "require <module name>"
+require 'prime'
+
+#with the prime module, we can get an array of prime numbers already calculated for us using
+array_of_primes = Prime.instance
+first_5_primes = array_of_primes.first 5
+puts first_5_primes
