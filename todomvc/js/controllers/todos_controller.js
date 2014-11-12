@@ -3,6 +3,11 @@
 //Todos Controller, according to Ember Controller naming conventions
 Todos.TodosController = Ember.ArrayController.extend({
     actions : {
+        clearCompleted : function(){
+            var completed = this.filterBy('isCompleted', true); //filterBy returns an instance of EmberArray
+            completed.invoke('deleteRecord');                   //invoke is part of the EmberArray API; executes method on each obj in the Array if the method exists on that obj
+            completed.invoke('save');
+        },
         createTodo : function(){
             var newTitle = this.get('newTitle'); //property of the template's controller that is set when value attr of input field is changed
             if( !newTitle )
@@ -24,6 +29,16 @@ Todos.TodosController = Ember.ArrayController.extend({
             todo.save();
         }
     },
+
+    //returns boolean: are there todos where isCompleted is true
+    hasCompleted : function(){
+        return this.get('completed') > 0;
+    }.property('completed'),
+
+    //returns number of todos isCompleted
+    completed : function(){
+        return this.filterBy('isCompleted', true).get('length');
+    }.property('@each.isCompleted'),
 
     //returns number of todos !isCompleted
     remaining : function(){
