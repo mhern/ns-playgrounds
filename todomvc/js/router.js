@@ -7,6 +7,7 @@ Todos.Router.map(function(){
         function(){
             //additional child routes
             this.route('active');
+            this.route('completed');
         }
     );
 });
@@ -36,6 +37,23 @@ Todos.TodosActiveRoute = Ember.Route.extend({
     },
     //normally transitioning to a new route changes the template rendered into the parent {{outlet}},
     //but since we want to reuse the template 'todos/index' just updating the list of active,
+    //we implement the renderTemplate method and call render with the desired template and controller (same as todos/index route)
+    renderTemplate : function(_controller){
+        this.render('todos/index', {controller: _controller});
+    }
+});
+
+//corresponds with todos.completed route
+Todos.TodosCompletedRoute = Ember.Route.extend({
+    //model for this route is the collection of todos whose isCompleted property is true
+    //when a todo's isCompleted property changes, this collection will automatically update to add or remove the todo
+    model : function(){
+        return this.store.filter('todo', function(_todo){
+            return _todo.get('isCompleted');
+        });
+    },
+    //normally transitioning to a new route changes the template rendered into the parent {{outlet}},
+    //but since we want to reuse the template 'todos/index' just updating the list of completed,
     //we implement the renderTemplate method and call render with the desired template and controller (same as todos/index route)
     renderTemplate : function(_controller){
         this.render('todos/index', {controller: _controller});
