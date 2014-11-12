@@ -36,8 +36,8 @@ Todos.TodosActiveRoute = Ember.Route.extend({
         });
     },
     //normally transitioning to a new route changes the template rendered into the parent {{outlet}},
-    //but since we want to reuse the template 'todos/index' just updating the list of active,
-    //we implement the renderTemplate method and call render with the desired template and controller (same as todos/index route)
+    //but since we want to reuse the template 'todos/index' just updating the list of todos to render based on model,
+    //we implement the renderTemplate method and call render with the desired template and controller
     renderTemplate : function(_controller){
         this.render('todos/index', {controller: _controller});
     }
@@ -52,9 +52,7 @@ Todos.TodosCompletedRoute = Ember.Route.extend({
             return _todo.get('isCompleted');
         });
     },
-    //normally transitioning to a new route changes the template rendered into the parent {{outlet}},
-    //but since we want to reuse the template 'todos/index' just updating the list of completed,
-    //we implement the renderTemplate method and call render with the desired template and controller (same as todos/index route)
+    //see comment over TodosActiveRoute renderTemplate function
     renderTemplate : function(_controller){
         this.render('todos/index', {controller: _controller});
     }
